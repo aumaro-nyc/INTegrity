@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <chrono>
 #include <random>
+#include <climits>
 
 #define ll long long
 using namespace std;
@@ -143,18 +144,27 @@ ll genRand(ll max)
  * Key Generation function
 
  */
-int generateEKey(ll &Ekey, ll p, ll q)
+ll generateEKey(ll p, ll q)
 {
     ll sentinel = (p - 1) * (q - 1);
+    ll eKey;
     
-    
+    do
+    {
+	eKey = genRand((ll)INT_MAX);
+    }while(gcd(eKey, sentinel) != 1);
 
+    cout << "GCD between key and sentinel: " << gcd(eKey, sentinel) << endl;
+
+    return eKey;
 }
 
 
 
 int main()
 {
+
+/*
     int iteration = 5;
     ll num;
     cout << "Enter integer to test: ";
@@ -168,6 +178,13 @@ int main()
     cout << "GCD: " << gcd((ll)10, num) << endl;
 
     cout << genRand((ll)100) << endl;
+*/
+
+    ll p = 127;
+    ll q = 839;
+
+    ll encKey = generateEKey(p, q);
+    cout << "Encryption key: " << encKey << endl;
 
     return 0;
 }
