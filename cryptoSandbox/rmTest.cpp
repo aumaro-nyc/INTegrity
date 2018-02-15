@@ -141,7 +141,7 @@ ll genRand(ll max)
 
 /*
 
- * Key Generation function
+ * Public Key Generation function
 
  */
 ll generateEKey(ll p, ll q)
@@ -159,6 +159,25 @@ ll generateEKey(ll p, ll q)
     return eKey;
 }
 
+/*
+
+ * Private Key Generation Function
+ 
+ */
+ll generateDKey(ll eKey, ll p, ll q)
+{
+    ll mod = (p - 1) * (q - 1);
+    ll dKey;
+    ll sentinel;
+
+    do
+    {
+	dKey = genRand((ll)INT_MAX);
+	sentinel = eKey * dKey;
+    } while ((sentinel - 1) % mod != 0);
+
+    return dKey;
+}
 
 
 int main()
@@ -185,6 +204,9 @@ int main()
 
     ll encKey = generateEKey(p, q);
     cout << "Encryption key: " << encKey << endl;
+
+    ll decKey = generateDKey(encKey, p, q);
+    cout << "Decryption key: " << decKey << endl;
 
     return 0;
 }
