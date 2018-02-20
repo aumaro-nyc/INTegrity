@@ -10,6 +10,7 @@
 #include <chrono>
 #include <random>
 #include <climits>
+#include <string>
 
 #define ll long long
 using namespace std;
@@ -113,15 +114,14 @@ bool millerRab(ll p, int iterations)
  */
 ll gcd(ll a, ll b)
 {
-    if (a == 0 || b == 0)
-	return 0;
-
-    if (a == b)
-	return a;
-    
-    if (a > b)
-	return gcd(a - b, b);
-    return gcd(a, b - a);
+    ll temp;
+    while (b != 0)
+    {
+	temp = a;
+	a = b;
+	b = temp % b;
+    }
+    return a;
 }
 
 /*
@@ -140,6 +140,23 @@ ll genRand(ll max)
 }
 
 /*
+ * Function to generate random prime numbers
+ */
+ll genPrime()
+{
+    ll num;
+    int iteration = 5;
+
+    do
+    {
+    num = genRand((ll)INT_MAX);
+
+    } while(!millerRab(num, iteration));
+    
+    return num;
+}
+
+/*
 
  * Public Key Generation function
 
@@ -147,14 +164,15 @@ ll genRand(ll max)
 ll generateEKey(ll p, ll q)
 {
     ll sentinel = (p - 1) * (q - 1);
+    cout << "(genEKey): sentinel value: " << sentinel << endl;
     ll eKey;
     
     do
     {
-	eKey = genRand((ll)INT_MAX);
-    }while(gcd(eKey, sentinel) != 1);
+	eKey = genRand(100000);
+    }while(gcd(sentinel, eKey) != 1);
 
-    cout << "GCD between key and sentinel: " << gcd(eKey, sentinel) << endl;
+   // cout << "GCD between key and sentinel: " << gcd(eKey, sentinel) << endl;
 
     return eKey;
 }
@@ -170,14 +188,38 @@ ll generateDKey(ll eKey, ll p, ll q)
     ll dKey;
     ll sentinel;
 
+    cout << "Mod Value: " << mod << endl;
+
     do
     {
-	dKey = genRand((ll)INT_MAX);
+	dKey = genRand(LLONG_MAX);
 	sentinel = eKey * dKey;
+	cout << "Remainder:   " << (sentinel - 1) % mod << endl;
     } while ((sentinel - 1) % mod != 0);
 
     return dKey;
 }
+
+
+/* D Key attempt #2 */
+ll generateDecKey(ll eKey, ll p, ll q)
+{
+    ll mod = (p - 1) * (q - 1);
+    ll dKey;
+
+    ll magicNum = genRand(13);
+    
+    dKey = (mod * magicNum + 1) / eKey;
+
+    return dKey;
+}
+
+
+/*
+
+ * RSA Encryption Function
+
+ */
 
 
 int main()
@@ -199,14 +241,20 @@ int main()
     cout << genRand((ll)100) << endl;
 */
 
-    ll p = 127;
-    ll q = 839;
+    ll p = genPrime();
+    ll q = genPrime();
+
+    cout << "Value of p: " << p << endl;
+    cout << "Value of q: " << q << endl;
 
     ll encKey = generateEKey(p, q);
     cout << "Encryption key: " << encKey << endl;
 
-    ll decKey = generateDKey(encKey, p, q);
-    cout << "Decryption key: " << decKey << endl;
+    ll decKey = generateDecKey(encKey, p, q);
+    string decStr = to_string(decKey);
+    cout << "Decryption key (int): " << decKey << endl;
+    cout << "Decryption key (hex): " << hex << decKey << endl;
+    cout << "Decryption key (oct): " << oct << decKey << endl;
 
     return 0;
 }
