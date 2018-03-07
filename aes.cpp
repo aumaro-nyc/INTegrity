@@ -16,6 +16,18 @@
 #include "cryptopp610/nbtheory.h"
 using namespace std;
 
+void makeKeys() {
+
+
+
+}
+
+void Encrypt() {
+	CFB_Mode<AES>::Encryption cfbEncryption(key, key.size(), iv);
+	cfbEncryption.ProcessData((byte*)plainText, (byte*)plainText, messageLen);
+}
+
+
 int main() {
 
 	// initailize variables
@@ -35,16 +47,17 @@ int main() {
 	CryptoPP::SecByteBlock t1(dh->PrivateKeyLength()), t2(dh->PublicKeyLength());
 	//dh->GenerateStaticKeyPair(prng, t1, t2);
 	dh->GenerateKeyPair(prng, t1, t2);
-	const CryptoPP::Integer k1(t1, t1.size()), k2(t2, t2.size());
+	const CryptoPP::Integer pubKey(t1, t1.size()), privKey(t2, t2.size());
 
 	cout << "Private key:\n";
-	cout << hex << k1 << endl;
+	cout << hex << pubKey << endl;
 	cout << "Public key:\n";
-	cout << hex << k2 << endl;
-	/*
+	cout << hex << privKey << endl;
+	
+
 	// Calculate a SHA-256 hash over the Diffie-Hellman session key
 	SecByteBlock key(SHA256::DIGESTSIZE);
-	SHA256().CalculateDigest(key, secretKeyA, secretKeyA.size()); 
+	SHA256().CalculateDigest(key, privKey, privKey.size()); 
 
 	// Generate a random IV
 	byte iv[AES::BLOCKSIZE];
@@ -59,6 +72,6 @@ int main() {
 	// Decrypt
 	CFB_Mode<AES>::Decryption cfbDecryption(key, key.size(), iv);
 	cfbDecryption.ProcessData((byte*)plainText, (byte*)plainText, messageLen);
-*/
+
 	return 0;
 }
