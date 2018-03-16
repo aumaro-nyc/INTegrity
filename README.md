@@ -10,3 +10,5 @@ Running program:
     make
     make run
 
+Encyrpted files will all end up in the folder called encrypted under the same name the original file was called.
+
