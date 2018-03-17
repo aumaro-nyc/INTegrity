@@ -19,7 +19,7 @@
 #include "cryptopp610/nbtheory.h"
 using namespace std;
 
-void makeKeys() {
+void make AESKeys() {
 	// initailize varibles
 	int aesKeyLength = CryptoPP::SHA256::DIGESTSIZE; // 32 bytes = 256 bit key
 	int defBlockSize = CryptoPP::AES::BLOCKSIZE;
@@ -37,7 +37,6 @@ void makeKeys() {
 	dh->GenerateKeyPair(prng, t1, t2);
 	const CryptoPP::Integer pubKey(t1, t1.size()), privKey(t2, t2.size());
 
-
 	/*
 		cout << "Private key:\n";
 		cout << hex << pubKey << endl;
@@ -46,18 +45,7 @@ void makeKeys() {
 	*/
 
 }
-/*
-void Encrypt(SecByteBlock key, ) {
-	CFB_Mode<AES>::Encryption cfbEncryption(key, key.size(), iv);
-	cfbEncryption.ProcessData((byte*)plainText, (byte*)plainText, messageLen);
-}
 
-void Decrypt() {
-	CFB_Mode<AES>::Decryption cfbDecryption(key, key.size(), iv);
-	cfbDecryption.ProcessData((byte*)plainText, (byte*)plainText, messageLen);
-}
-
-*/
 int main() {
 
 	string user;
@@ -71,29 +59,7 @@ int main() {
 
 	cout << "user: " << user << endl;
 	cout << "password: " << password << endl;
-	cout << "Creating keys...\n";
-	//makeKeys();
-	int aesKeyLength = CryptoPP::SHA256::DIGESTSIZE; // 32 bytes = 256 bit key
-	int defBlockSize = CryptoPP::AES::BLOCKSIZE;
-	// Generate a random IV
-	//CryptoPP::byte iv[CryptoPP::AES::BLOCKSIZE];
-	//CryptoPP::AutoSeededRandomPool rnd;
-	//rnd.GenerateBlock(iv, CryptoPP::AES::BLOCKSIZE);
-/*
-	CryptoPP::AutoSeededRandomPool prng;
-	CryptoPP::PrimeAndGenerator *prime = new CryptoPP::PrimeAndGenerator(1, prng, 512, 511);
-
-	const CryptoPP::Integer p = prime->Prime();
-	const CryptoPP::Integer q = prime->SubPrime();
-	const CryptoPP::Integer g = prime->Generator();
-
-	CryptoPP::DH *dh = new CryptoPP::DH();//(p, q, g);
-	dh->AccessGroupParameters().Initialize(p, q, g);
-	CryptoPP::SecByteBlock t1(dh->PrivateKeyLength()), t2(dh->PublicKeyLength());
-	dh->GenerateKeyPair(prng, t1, t2);
-	const CryptoPP::Integer pubKey(t1, t1.size()), privKey(t2, t2.size());
-*/
-
+	
 	// Pseudo Random Number Generator
 	CryptoPP::AutoSeededRandomPool rng;
 
@@ -122,11 +88,9 @@ int main() {
 
 	///////////////////////////////////////
 	// Create Keys
+	cout << "Creating keys...\n";
 	CryptoPP::RSA::PrivateKey privateKey(params);
 	CryptoPP::RSA::PublicKey publicKey(params);
-
-
-
 
 	//get file user wants to encrypt
 	cout << "Please enter a file name:\n";
@@ -151,6 +115,7 @@ int main() {
 				string outFile = "encrypted/" + path.substr(index+1);
 				cout << "Encrypted file path: " << outFile << endl;
 				encryp_file.open(outFile);
+
 				while(getline(file,line)) {
 					encLine += line;
 				}
@@ -158,8 +123,6 @@ int main() {
 				CryptoPP::StringSource ss1(encLine, true,
 					new CryptoPP::PK_EncryptorFilter(rng, e, new CryptoPP::StringSink(cipher))
 				);
-/*					CryptoPP::CFB_Mode<CryptoPP::AES>::Encryption cfbEncryption(pubKey, dh->PublicKeyLength(), iv);
-				cfbEncryption.ProcessData((unsigned char *)line, (unsigned char *)line, line.length());*/
 				encryp_file << cipher << endl;
 				encryp_file.close();
 				file.close();
@@ -172,6 +135,7 @@ int main() {
 				string outFile = "decrypted/" + path.substr(index+1);
 				cout << "Decrypted file path: " << outFile << endl;
 				decryp_file.open(outFile);
+
 				while(getline(file,line)) {
 					decLine += line;
 				}
@@ -193,22 +157,15 @@ int main() {
 		
 		cout << "Would you like to do more? yes(y) or no(n)\n";
 		cin >> doMore;
-		cout << "Please enter a file name:\n";
-/*		string path;
-		ifstream file;*/
-		cin >> path;
-		cout << "Path: " << path << endl;
-		file.open(path);
+		if((doMore == "yes") || (doMore == "y")){
+			cout << "Please enter a file name:\n";
+			cin >> path;
+			cout << "Path: " << path << endl;
+			file.open(path);	
+		}
 
 	} while ((doMore == "yes") || (doMore == "y"));
 	
-
-/*	// Calculate a SHA-256 hash over the Diffie-Hellman session key
-	CryptoPP::SecByteBlock key(CryptoPP::SHA256::DIGESTSIZE);
-	CryptoPP::SHA256().CalculateDigest(key, privKey, CryptoPP::SHA256::DIGESTSIZE); 
-
-	cout << "SHA256 Hash: ";
-	cout << CryptoPP::SecByteBlock << key << endl;*/
 
 	file.close();
 
