@@ -9,8 +9,10 @@ Set up environment:
 Running program:
     make
     make run
-    You will be prompted to give the path of the file you would like to have encrypted, please enter a valid file path.
-    The encrypted file will be written into the folder encrypted.
+    You will be prompted to give the path of the file you would like to have encrypted/decrypted, please enter a valid file path.
+    Then you will be prompted on whether you would like the file encrypted or decrypted.
+    
+    The encrypted file will be written into the folder encrypted and decrypted file will be written into the folder decrypt.
 
-Encyrpted files will all end up in the folder called encrypted under the same name the original file was called.
+Files will all end up in the folder called encrypted/decrypted (based on selected option) under the same name the original file was called.
 
