@@ -56,10 +56,10 @@ int main() {
 	cin >> user;
 	cout << "Please enter a password: ";
 	cin >> password;
-
+/*
 	cout << "user: " << user << endl;
 	cout << "password: " << password << endl;
-	
+*/
 	// Pseudo Random Number Generator
 	CryptoPP::AutoSeededRandomPool rng;
 
@@ -99,7 +99,7 @@ int main() {
 	string path;
 	ifstream file;
 	cin >> path;
-	cout << "Path: " << path << endl;
+	//cout << "Path: " << path << endl;
 	file.open(path);
 
 	string doMore;
