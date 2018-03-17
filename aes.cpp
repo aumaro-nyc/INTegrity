@@ -49,7 +49,7 @@ int main() {
 	cout << "password: " << password << endl;
 	cout << "Creating keys...\n";
 
-	// initailize variables
+	// initailize varibles
 	int aesKeyLength = CryptoPP::SHA256::DIGESTSIZE; // 32 bytes = 256 bit key
 	int defBlockSize = CryptoPP::AES::BLOCKSIZE;
 
