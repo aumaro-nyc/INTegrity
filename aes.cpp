@@ -105,6 +105,8 @@ int main() {
 
 		string whatDo;
 		string line, encLine, cipher, decLine, decipher;
+		// Message
+		string message = "RSA Signature", signature;
 		do {
 			cout << "Would you like to encrypt or decrypt this file?\n";
 			cin >> whatDo;
@@ -115,6 +117,14 @@ int main() {
 				string outFile = "encrypted/" + path.substr(index+1);
 				cout << "Encrypted file path: " << outFile << endl;
 				encryp_file.open(outFile);
+
+/*				// Sign and Encode
+				CryptoPP::RSASSA_PKCS1v15_SHA_Signer signer(privateKey);
+				CryptoPP::StringSource sig(message, true, 
+				    new CryptoPP::SignerFilter(rng, signer,
+				        new CryptoPP::StringSink(signature)
+				   ) // SignerFilter
+				); // StringSource*/
 
 				while(getline(file,line)) {
 					encLine += line;
@@ -135,6 +145,14 @@ int main() {
 				string outFile = "decrypted/" + path.substr(index+1);
 				cout << "Decrypted file path: " << outFile << endl;
 				decryp_file.open(outFile);
+
+/*				CryptoPP::RSASSA_PKCS1v15_SHA_Verifier verifier(publicKey);
+				CryptoPP::StringSource sig(message+signature, true,
+				    new CryptoPP::SignatureVerificationFilter(
+				        verifier, NULL,
+				        CryptoPP::SignatureVerificationFilter::THROW_EXCEPTION
+				   ) // SignatureVerificationFilter
+				); // StringSource*/
 
 				while(getline(file,line)) {
 					decLine += line;
