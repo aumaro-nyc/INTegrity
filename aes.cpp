@@ -19,7 +19,7 @@
 #include "cryptopp610/nbtheory.h"
 using namespace std;
 
-void make AESKeys() {
+void makeAESKeys() {
 	// initailize varibles
 	int aesKeyLength = CryptoPP::SHA256::DIGESTSIZE; // 32 bytes = 256 bit key
 	int defBlockSize = CryptoPP::AES::BLOCKSIZE;
