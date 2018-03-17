@@ -7,6 +7,7 @@
 #include "cppconn/include/exception.h"
 #include "cppconn/include/resultset.h"
 #include "cppconn/include/statement.h"
+#include "cppconn/include/prepared_statement.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ int main(void) {
         sql::Connection *con;
         sql::Statement *stmt;
         sql::ResultSet *res;
+        sql::PreparedStatement *pstmt;
         cout << "variables set\n";
  
         // Create connection
@@ -26,6 +28,19 @@ int main(void) {
         
         // Connect to MySQL database
         con->setSchema("Data");
+        
+        // Statement test
+        stmt = con->createStatement();
+        stmt->execute("INSERT INTO Person(email, pw, pub_key, priv_key) VALUES(\"test@test.com\", \"password\", \"123\", \"456\")");
+        delete stmt;
+        
+        // Prepared statement test
+        pstmt = con->prepareStatement("SELECT email FROM Person;");
+        res = pstmt->executeQuery();
+        delete pstmt;
+        
+        // Free variables
+        delete con;
         
     } catch (sql::SQLException &e) {
         cout << "SQLException\n";
