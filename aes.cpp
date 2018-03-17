@@ -36,6 +36,19 @@ void Decrypt() {
 
 int main() {
 
+	string user;
+	string password;
+
+	//get user information
+	cout << "Please enter a valid email: ";
+	cin >> user;
+	cout << "Please enter a password: ";
+	cin >> password;
+
+	cout << "user: " << user << endl;
+	cout << "password: " << password << endl;
+	cout << "Creating keys...\n";
+
 	// initailize variables
 	int aesKeyLength = CryptoPP::SHA256::DIGESTSIZE; // 32 bytes = 256 bit key
 	int defBlockSize = CryptoPP::AES::BLOCKSIZE;
@@ -53,10 +66,12 @@ int main() {
 	dh->GenerateKeyPair(prng, t1, t2);
 	const CryptoPP::Integer pubKey(t1, t1.size()), privKey(t2, t2.size());
 
+/*
 	cout << "Private key:\n";
 	cout << hex << pubKey << endl;
 	cout << "Public key:\n";
 	cout << hex << privKey << endl;
+*/
 
 	//get file user wants to encrypt
 	cout << "Please enter a file name:\n";
@@ -88,7 +103,7 @@ int main() {
 			decryp_file.open(outFile);
 			break;
 		}
-		cout << "I'm sorry, it is unclear what you would like to do with the file\n";
+		cout << "\nI'm sorry, it is unclear what you would like to do with the file\n";
 
 	} while ( (whatDo != "encrypt") && (whatDo != "decrypt"));
 
