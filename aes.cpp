@@ -91,6 +91,8 @@ int main() {
 	cout << "Creating keys...\n";
 	CryptoPP::RSA::PrivateKey privateKey(params);
 	CryptoPP::RSA::PublicKey publicKey(params);
+    
+    // Here is where you would add a user to the database, with pub and priv keys
 
 	//get file user wants to encrypt
 	cout << "Please enter a file name:\n";
@@ -129,6 +131,7 @@ int main() {
 				while(getline(file,line)) {
 					encLine += line;
 				}
+                // Here we would get the public key from the database
 				CryptoPP::RSAES_OAEP_SHA_Encryptor e(publicKey);
 				CryptoPP::StringSource ss1(encLine, true,
 					new CryptoPP::PK_EncryptorFilter(rng, e, new CryptoPP::StringSink(cipher))
@@ -157,6 +160,7 @@ int main() {
 				while(getline(file,line)) {
 					decLine += line;
 				}
+                // Here we would get the user's pviate key from the database
 				CryptoPP::RSAES_OAEP_SHA_Decryptor d(privateKey);
 				CryptoPP::StringSource ss2(decLine, true,
 				    new CryptoPP::PK_DecryptorFilter(rng, d,
