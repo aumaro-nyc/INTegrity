@@ -66,12 +66,31 @@ int main() {
 	cout << "Path: " << path << endl;
 	file.open(path);
 
-	//write encrypted file
-	ofstream encryp_file;
-	int index = path.find_last_of("/");
-	string outFile = "encrypted/" + path.substr(index+1);
-	cout << "Outfile path: " << outFile << endl;
-	encryp_file.open(outFile);
+	string whatDo;
+	do {
+		cout << "Would you like to encrypt or decrypt this file?\n";
+		cin >> whatDo;
+		if (whatDo == "encrypt") {
+			//write encrypted file
+			ofstream encryp_file;
+			int index = path.find_last_of("/");
+			string outFile = "encrypted/" + path.substr(index+1);
+			cout << "Encrpted file path: " << outFile << endl;
+			encryp_file.open(outFile);
+			break;
+		}
+		else if (whatDo == "decrypt") {
+			//write decrypted file
+			ofstream decryp_file;
+			int index = path.find_last_of("/");
+			string outFile = "decrypted/" + path.substr(index+1);
+			cout << "Decrypted file path: " << outFile << endl;
+			decryp_file.open(outFile);
+			break;
+		}
+		cout << "I'm sorry, it is unclear what you would like to do with the file\n";
+
+	} while ( (whatDo != "encrypt") && (whatDo != "decrypt"));
 
 
 	
