@@ -56,10 +56,10 @@ int main() {
 	cin >> user;
 	cout << "Please enter a password: ";
 	cin >> password;
-/*
+
 	cout << "user: " << user << endl;
 	cout << "password: " << password << endl;
-*/
+	
 	// Pseudo Random Number Generator
 	CryptoPP::AutoSeededRandomPool rng;
 
@@ -91,15 +91,13 @@ int main() {
 	cout << "Creating keys...\n";
 	CryptoPP::RSA::PrivateKey privateKey(params);
 	CryptoPP::RSA::PublicKey publicKey(params);
-    
-    // Here is where you would add a user to the database, with pub and priv keys
 
 	//get file user wants to encrypt
 	cout << "Please enter a file name:\n";
 	string path;
 	ifstream file;
 	cin >> path;
-	//cout << "Path: " << path << endl;
+	cout << "Path: " << path << endl;
 	file.open(path);
 
 	string doMore;
@@ -107,8 +105,6 @@ int main() {
 
 		string whatDo;
 		string line, encLine, cipher, decLine, decipher;
-		// Message
-		string message = "RSA Signature", signature;
 		do {
 			cout << "Would you like to encrypt or decrypt this file?\n";
 			cin >> whatDo;
@@ -120,18 +116,9 @@ int main() {
 				cout << "Encrypted file path: " << outFile << endl;
 				encryp_file.open(outFile);
 
-/*				// Sign and Encode
-				CryptoPP::RSASSA_PKCS1v15_SHA_Signer signer(privateKey);
-				CryptoPP::StringSource sig(message, true, 
-				    new CryptoPP::SignerFilter(rng, signer,
-				        new CryptoPP::StringSink(signature)
-				   ) // SignerFilter
-				); // StringSource*/
-
 				while(getline(file,line)) {
 					encLine += line;
 				}
-                // Here we would get the public key from the database
 				CryptoPP::RSAES_OAEP_SHA_Encryptor e(publicKey);
 				CryptoPP::StringSource ss1(encLine, true,
 					new CryptoPP::PK_EncryptorFilter(rng, e, new CryptoPP::StringSink(cipher))
@@ -149,18 +136,9 @@ int main() {
 				cout << "Decrypted file path: " << outFile << endl;
 				decryp_file.open(outFile);
 
-/*				CryptoPP::RSASSA_PKCS1v15_SHA_Verifier verifier(publicKey);
-				CryptoPP::StringSource sig(message+signature, true,
-				    new CryptoPP::SignatureVerificationFilter(
-				        verifier, NULL,
-				        CryptoPP::SignatureVerificationFilter::THROW_EXCEPTION
-				   ) // SignatureVerificationFilter
-				); // StringSource*/
-
 				while(getline(file,line)) {
 					decLine += line;
 				}
-                // Here we would get the user's pviate key from the database
 				CryptoPP::RSAES_OAEP_SHA_Decryptor d(privateKey);
 				CryptoPP::StringSource ss2(decLine, true,
 				    new CryptoPP::PK_DecryptorFilter(rng, d,
