@@ -14,5 +14,7 @@ Running program:
     
     The encrypted file will be written into the folder encrypted and decrypted file will be written into the folder decrypt.
 
+ *Note: Only .txt files can be encrypted and decrypted. Also the decrypted file will no longer contain any newline characters that were in the original file.
+
 Files will all end up in the folder called encrypted/decrypted (based on selected option) under the same name the original file was called.
 
